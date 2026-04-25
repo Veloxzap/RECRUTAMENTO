@@ -1,4 +1,4 @@
-export type CurrentStatus = 'Em Análise' | 'Aprovado' | 'Reprovado' | 'Em Espera' | 'Contratado'
+export type CurrentStatus = 'Sim' | 'Não'
 export type TestResult = 'Aprovado' | 'Reprovado' | 'Aguardando'
 export type JobStatus = 'disponível' | 'preenchida'
 

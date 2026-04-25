@@ -67,7 +67,7 @@ export function CandidateModal({ isOpen, onClose, candidate, onSuccess, data }: 
       })
     } else {
       reset({
-        current_status: 'Em Análise',
+        current_status: 'Não',
         test_result: 'Aguardando',
         should_hire: false,
         name: '',

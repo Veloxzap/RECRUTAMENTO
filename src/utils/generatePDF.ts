@@ -62,13 +62,19 @@ export const generateCandidatesPDF = (candidates: Candidate[], filters: any) => 
       8: { halign: 'center', fontStyle: 'bold' } // Contratar column
     },
     didParseCell: (data) => {
-      // Color coding for Situação
+      // Color coding for Agendamento (Situação)
       if (data.section === 'body' && data.column.index === 6) {
+        const val = data.cell.raw as string
+        if (val === 'Sim') data.cell.styles.textColor = [124, 58, 237] // Purple
+        if (val === 'Não') data.cell.styles.textColor = [100, 116, 139] // Slate
+      }
+      
+      // Color coding for Resultado
+      if (data.section === 'body' && data.column.index === 7) {
         const val = data.cell.raw as string
         if (val === 'Aprovado') data.cell.styles.textColor = [16, 185, 129] // Emerald
         if (val === 'Reprovado') data.cell.styles.textColor = [239, 68, 68] // Red
-        if (val === 'Contratado') data.cell.styles.textColor = [30, 58, 95] // Primary
-        if (val === 'Em Análise') data.cell.styles.textColor = [245, 158, 11] // Amber
+        if (val === 'Aguardando') data.cell.styles.textColor = [245, 158, 11] // Amber
       }
       
       // Color coding for Contratar

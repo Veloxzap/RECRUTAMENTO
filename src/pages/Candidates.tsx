@@ -436,17 +436,17 @@ export default function Candidates() {
 
 function StatusBadge({ status }: { status: string }) {
   const styles: any = {
-    'Em Análise': 'bg-amber-50 text-amber-600 border-amber-100',
+    'Sim': 'bg-purple-50 text-purple-600 border-purple-100',
+    'Não': 'bg-slate-50 text-slate-500 border-slate-100',
     'Aprovado': 'bg-emerald-50 text-emerald-600 border-emerald-100',
     'Reprovado': 'bg-red-50 text-red-600 border-red-100',
-    'Em Espera': 'bg-slate-50 text-slate-500 border-slate-100',
-    'Contratado': 'bg-primary/5 text-primary border-primary/10',
+    'Aguardando': 'bg-amber-50 text-amber-600 border-amber-100',
   }
 
   return (
     <span className={clsx(
       "px-3 py-1 rounded-full text-[11px] font-bold border uppercase tracking-wider",
-      styles[status] || styles['Em Análise']
+      styles[status] || 'bg-slate-50 text-slate-500 border-slate-100'
     )}>
       {status}
     </span>
