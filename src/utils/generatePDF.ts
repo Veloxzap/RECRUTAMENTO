@@ -56,18 +56,19 @@ export const generateCandidatesPDF = (candidates: Candidate[], filters: any) => 
 
   autoTable(doc, {
     startY: 38,
-    head: [['#', 'Nome', 'Contato', 'Função', 'Atuação', 'Data Teste', 'Situação', 'Resultado', 'Contratar']],
+    head: [['#', 'Nome', 'Contato', 'Função', 'Atuação', 'Data Teste', 'Agendamento', 'Resultado', 'Contratar']],
     body: tableData,
     headStyles: {
       fillColor: primaryColor,
       textColor: [255, 255, 255],
       fontSize: 9,
       fontStyle: 'bold',
-      halign: 'left'
+      halign: 'center'
     },
     styles: {
       fontSize: 8,
-      cellPadding: 3
+      cellPadding: 3,
+      halign: 'center'
     },
     alternateRowStyles: {
       fillColor: [248, 250, 252] // #F8FAFC
