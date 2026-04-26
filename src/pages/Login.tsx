@@ -7,7 +7,7 @@ import { supabase } from '../lib/supabase'
 import { Button } from '../components/ui/Button'
 import { Input } from '../components/ui/Input'
 import { toast } from 'sonner'
-import { LogIn } from 'lucide-react'
+import logoHm from '../assets/logo_hm.png'
 
 const loginSchema = z.object({
   email: z.string().email('E-mail inválido'),

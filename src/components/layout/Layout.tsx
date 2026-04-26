@@ -12,6 +12,7 @@ import {
 } from 'lucide-react'
 import { useAuthStore } from '../../store/useAuthStore'
 import { clsx } from 'clsx'
+import logoHm from '../../assets/logo_hm.png'
 
 interface LayoutProps {
   children: ReactNode
