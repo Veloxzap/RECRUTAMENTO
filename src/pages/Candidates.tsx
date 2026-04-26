@@ -42,6 +42,7 @@ export default function Candidates() {
   const [filterJob, setFilterJob] = useState(searchParams.get('vaga') || '')
   const [filterHire, setFilterHire] = useState(searchParams.get('contratar') === 'true' ? 'true' : '')
   const [dateRange, setDateRange] = useState({ start: '', end: '' })
+  const [regDateRange, setRegDateRange] = useState({ start: '', end: '' })
   const [showFilters, setShowFilters] = useState(!!searchParams.get('agendamento') || !!searchParams.get('contratar') || !!searchParams.get('vaga'))
 
   // Data for selects
@@ -122,9 +123,17 @@ export default function Candidates() {
         })
       }
 
-      return matchesSearch && matchesStatus && matchesResult && matchesJob && matchesDate && matchesHire
+      let matchesRegDate = true
+      if (regDateRange.start && regDateRange.end && c.registration_date) {
+        matchesRegDate = isWithinInterval(parseISO(c.registration_date), {
+          start: parseISO(regDateRange.start),
+          end: parseISO(regDateRange.end)
+        })
+      }
+
+      return matchesSearch && matchesStatus && matchesResult && matchesJob && matchesDate && matchesHire && matchesRegDate
     })
-  }, [candidates, search, filterStatus, filterResult, filterJob, dateRange, filterHire])
+  }, [candidates, search, filterStatus, filterResult, filterJob, dateRange, filterHire, regDateRange])
 
   const clearFilters = () => {
     setSearch('')
@@ -133,6 +142,7 @@ export default function Candidates() {
     setFilterJob('')
     setFilterHire('')
     setDateRange({ start: '', end: '' })
+    setRegDateRange({ start: '', end: '' })
   }
 
   const handleExport = () => {
@@ -203,7 +213,7 @@ export default function Candidates() {
 
         {/* Filters Panel */}
         {showFilters && (
-          <div className="glass-card p-6 rounded-3xl animate-in slide-in-from-top-2 duration-300 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="glass-card p-6 rounded-3xl animate-in slide-in-from-top-2 duration-300 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
             <div className="space-y-1">
               <label className="text-xs font-bold text-slate-500 uppercase ml-1">Agendamento</label>
               <select 
@@ -258,7 +268,25 @@ export default function Candidates() {
                 />
               </div>
             </div>
-            <div className="sm:col-span-2 lg:col-span-4 flex justify-end">
+            <div className="space-y-1">
+              <label className="text-xs font-bold text-slate-500 uppercase ml-1">Data do Registro</label>
+              <div className="flex gap-2 items-center">
+                <input 
+                  type="date" 
+                  className="input-field py-1.5 text-[11px] px-2 w-full" 
+                  value={regDateRange.start}
+                  onChange={(e) => setRegDateRange(prev => ({ ...prev, start: e.target.value }))}
+                />
+                <span className="text-slate-400">→</span>
+                <input 
+                  type="date" 
+                  className="input-field py-1.5 text-[11px] px-2 w-full" 
+                  value={regDateRange.end}
+                  onChange={(e) => setRegDateRange(prev => ({ ...prev, end: e.target.value }))}
+                />
+              </div>
+            </div>
+            <div className="sm:col-span-2 lg:col-span-3 xl:col-span-5 flex justify-end">
               <button 
                 onClick={clearFilters}
                 className="text-sm font-semibold text-slate-400 hover:text-primary transition-colors flex items-center gap-1"

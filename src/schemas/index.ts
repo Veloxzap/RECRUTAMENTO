@@ -11,6 +11,7 @@ export const candidateSchema = z.object({
   test_result: z.enum(['Aprovado', 'Reprovado', 'Aguardando']),
   should_hire: z.boolean(),
   notes: z.string().optional().nullable(),
+  registration_date: z.string().optional().nullable(),
 })
 
 export type CandidateFormValues = z.infer<typeof candidateSchema>

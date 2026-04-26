@@ -45,6 +45,7 @@ export interface Candidate {
   notes: string | null
   created_at: string
   updated_at: string
+  registration_date: string
   
   // Relations
   work_location?: WorkLocation
