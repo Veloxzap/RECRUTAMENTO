@@ -213,85 +213,93 @@ export default function Candidates() {
 
         {/* Filters Panel */}
         {showFilters && (
-          <div className="glass-card p-6 rounded-3xl animate-in slide-in-from-top-2 duration-300 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
-            <div className="space-y-1">
-              <label className="text-xs font-bold text-slate-500 uppercase ml-1">Agendamento</label>
-              <select 
-                className="input-field bg-white"
-                value={filterStatus}
-                onChange={(e) => setFilterStatus(e.target.value)}
-              >
-                <option value="">Todas</option>
-                <option value="Sim">Sim</option>
-                <option value="Não">Não</option>
-              </select>
-            </div>
-            <div className="space-y-1">
-              <label className="text-xs font-bold text-slate-500 uppercase ml-1">Resultado</label>
-              <select 
-                className="input-field bg-white"
-                value={filterResult}
-                onChange={(e) => setFilterResult(e.target.value)}
-              >
-                <option value="">Todos</option>
-                <option value="Aprovado">Aprovado</option>
-                <option value="Reprovado">Reprovado</option>
-                <option value="Aguardando">Aguardando</option>
-              </select>
-            </div>
-            <div className="space-y-1">
-              <label className="text-xs font-bold text-slate-500 uppercase ml-1">Função</label>
-              <select 
-                className="input-field bg-white"
-                value={filterJob}
-                onChange={(e) => setFilterJob(e.target.value)}
-              >
-                <option value="">Todas</option>
-                {jobs.map(j => <option key={j.id} value={j.title}>{j.title}</option>)}
-              </select>
-            </div>
-            <div className="space-y-1">
-              <label className="text-xs font-bold text-slate-500 uppercase ml-1">Período do Teste</label>
-              <div className="flex gap-2 items-center">
-                <input 
-                  type="date" 
-                  className="input-field py-1.5 text-[11px] px-2 w-full" 
-                  value={dateRange.start}
-                  onChange={(e) => setDateRange(prev => ({ ...prev, start: e.target.value }))}
-                />
-                <span className="text-slate-400">→</span>
-                <input 
-                  type="date" 
-                  className="input-field py-1.5 text-[11px] px-2 w-full" 
-                  value={dateRange.end}
-                  onChange={(e) => setDateRange(prev => ({ ...prev, end: e.target.value }))}
-                />
+          <div className="glass-card p-6 rounded-3xl animate-in slide-in-from-top-2 duration-300 space-y-6">
+            {/* Primeira Linha: Seletores */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+              <div className="space-y-1">
+                <label className="text-xs font-bold text-slate-500 uppercase ml-1">Agendamento</label>
+                <select 
+                  className="input-field bg-white"
+                  value={filterStatus}
+                  onChange={(e) => setFilterStatus(e.target.value)}
+                >
+                  <option value="">Todas</option>
+                  <option value="Sim">Sim</option>
+                  <option value="Não">Não</option>
+                </select>
+              </div>
+              <div className="space-y-1">
+                <label className="text-xs font-bold text-slate-500 uppercase ml-1">Resultado</label>
+                <select 
+                  className="input-field bg-white"
+                  value={filterResult}
+                  onChange={(e) => setFilterResult(e.target.value)}
+                >
+                  <option value="">Todos</option>
+                  <option value="Aprovado">Aprovado</option>
+                  <option value="Reprovado">Reprovado</option>
+                  <option value="Aguardando">Aguardando</option>
+                </select>
+              </div>
+              <div className="space-y-1">
+                <label className="text-xs font-bold text-slate-500 uppercase ml-1">Função</label>
+                <select 
+                  className="input-field bg-white"
+                  value={filterJob}
+                  onChange={(e) => setFilterJob(e.target.value)}
+                >
+                  <option value="">Todas</option>
+                  {jobs.map(j => <option key={j.id} value={j.title}>{j.title}</option>)}
+                </select>
               </div>
             </div>
-            <div className="space-y-1">
-              <label className="text-xs font-bold text-slate-500 uppercase ml-1">Data do Registro</label>
-              <div className="flex gap-2 items-center">
-                <input 
-                  type="date" 
-                  className="input-field py-1.5 text-[11px] px-2 w-full" 
-                  value={regDateRange.start}
-                  onChange={(e) => setRegDateRange(prev => ({ ...prev, start: e.target.value }))}
-                />
-                <span className="text-slate-400">→</span>
-                <input 
-                  type="date" 
-                  className="input-field py-1.5 text-[11px] px-2 w-full" 
-                  value={regDateRange.end}
-                  onChange={(e) => setRegDateRange(prev => ({ ...prev, end: e.target.value }))}
-                />
+
+            {/* Segunda Linha: Datas e Limpar */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-end">
+              <div className="space-y-1">
+                <label className="text-xs font-bold text-slate-500 uppercase ml-1">Período do Teste</label>
+                <div className="flex gap-2 items-center">
+                  <input 
+                    type="date" 
+                    className="input-field py-2 text-xs w-full" 
+                    value={dateRange.start}
+                    onChange={(e) => setDateRange(prev => ({ ...prev, start: e.target.value }))}
+                  />
+                  <span className="text-slate-400 font-bold">→</span>
+                  <input 
+                    type="date" 
+                    className="input-field py-2 text-xs w-full" 
+                    value={dateRange.end}
+                    onChange={(e) => setDateRange(prev => ({ ...prev, end: e.target.value }))}
+                  />
+                </div>
+              </div>
+              <div className="space-y-1">
+                <label className="text-xs font-bold text-slate-500 uppercase ml-1">Data do Registro</label>
+                <div className="flex gap-2 items-center">
+                  <input 
+                    type="date" 
+                    className="input-field py-2 text-xs w-full" 
+                    value={regDateRange.start}
+                    onChange={(e) => setRegDateRange(prev => ({ ...prev, start: e.target.value }))}
+                  />
+                  <span className="text-slate-400 font-bold">→</span>
+                  <input 
+                    type="date" 
+                    className="input-field py-2 text-xs w-full" 
+                    value={regDateRange.end}
+                    onChange={(e) => setRegDateRange(prev => ({ ...prev, end: e.target.value }))}
+                  />
+                </div>
               </div>
             </div>
-            <div className="sm:col-span-2 lg:col-span-3 xl:col-span-5 flex justify-end">
+
+            <div className="flex justify-end pt-2 border-t border-slate-50">
               <button 
                 onClick={clearFilters}
-                className="text-sm font-semibold text-slate-400 hover:text-primary transition-colors flex items-center gap-1"
+                className="text-xs font-bold text-slate-400 hover:text-primary transition-all flex items-center gap-1.5 uppercase tracking-wider"
               >
-                <X size={14} />
+                <X size={14} className="stroke-[3px]" />
                 Limpar Filtros
               </button>
             </div>
