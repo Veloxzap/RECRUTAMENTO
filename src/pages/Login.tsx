@@ -40,8 +40,8 @@ export default function Login() {
     <div className="min-h-screen flex items-center justify-center bg-bg-main p-4">
       <div className="w-full max-w-md space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
         <div className="text-center space-y-2">
-          <div className="mx-auto w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center text-primary mb-4">
-            <LogIn size={32} />
+          <div className="mx-auto bg-white p-4 rounded-3xl shadow-sm mb-6 inline-block">
+            <img src={logoHm} alt="Logo HM" className="h-16 w-auto object-contain" />
           </div>
           <h1 className="text-3xl font-bold tracking-tight text-slate-900">Recrutamento HM</h1>
           <p className="text-slate-500">Entre com suas credenciais para acessar o sistema</p>

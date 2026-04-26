@@ -37,11 +37,9 @@ export function Layout({ children, title, desc }: LayoutProps) {
       {/* Sidebar Desktop */}
       <aside className="hidden md:flex w-72 bg-primary text-white flex-col fixed inset-y-0 shadow-2xl">
         <div className="p-8">
-          <div className="flex items-center gap-3 mb-10">
-            <div className="w-10 h-10 bg-accent rounded-xl flex items-center justify-center text-primary font-bold text-xl">
-              HM
-            </div>
-            <span className="font-display font-bold text-lg tracking-tight">Recrutamento</span>
+          <div className="bg-white p-3 rounded-2xl flex items-center gap-3 mb-10 shadow-sm">
+            <img src={logoHm} alt="Logo HM" className="h-8 w-auto object-contain" />
+            <span className="font-display font-bold text-lg tracking-tight text-primary">Recrutamento</span>
           </div>
           
           <nav className="space-y-2">
@@ -78,11 +76,9 @@ export function Layout({ children, title, desc }: LayoutProps) {
       <main className="flex-1 md:ml-72 min-h-screen flex flex-col">
         {/* Header Mobile */}
         <header className="md:hidden bg-primary p-4 flex items-center justify-between sticky top-0 z-50">
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-accent rounded-lg flex items-center justify-center text-primary font-bold">
-              HM
-            </div>
-            <span className="text-white font-bold text-sm uppercase tracking-widest">Recrutamento</span>
+          <div className="flex items-center gap-2 bg-white px-3 py-1.5 rounded-xl shadow-sm">
+            <img src={logoHm} alt="Logo HM" className="h-6 w-auto object-contain" />
+            <span className="text-primary font-bold text-xs uppercase tracking-widest">Recrutamento</span>
           </div>
           <button 
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}

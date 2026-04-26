@@ -2,6 +2,7 @@ import { jsPDF } from 'jspdf'
 import autoTable from 'jspdf-autotable'
 import { format } from 'date-fns'
 import type { Candidate } from '../types'
+import logoHm from '../assets/logo_hm.png'
 
 export const generateCandidatesPDF = (candidates: Candidate[], filters: any) => {
   const doc = new jsPDF('l', 'mm', 'a4')
@@ -12,16 +13,29 @@ export const generateCandidatesPDF = (candidates: Candidate[], filters: any) => 
   doc.setFillColor(primaryColor[0], primaryColor[1], primaryColor[2])
   doc.rect(0, 0, 297, 25, 'F')
 
+  // Branding Square (White)
+  doc.setFillColor(255, 255, 255)
+  doc.roundedRect(15, 4, 60, 17, 2, 2, 'F')
+  
+  // Add Logo inside square
+  doc.addImage(logoHm, 'PNG', 18, 6, 12, 12)
+  
+  // Add Text inside square
+  doc.setTextColor(primaryColor[0], primaryColor[1], primaryColor[2])
+  doc.setFont('helvetica', 'bold')
+  doc.setFontSize(12)
+  doc.text('Recrutamento', 32, 14)
+
   // Header Title
   doc.setTextColor(255, 255, 255)
   doc.setFont('helvetica', 'bold')
   doc.setFontSize(18)
-  doc.text('Relatório de Candidatos', 15, 16)
+  doc.text('Relatório de Candidatos', 90, 16)
 
   // Subtitle
   doc.setFontSize(10)
   doc.setFont('helvetica', 'normal')
-  doc.text(`Gerado em: ${format(new Date(), 'dd/MM/yyyy HH:mm')}`, 240, 16)
+  doc.text(`Gerado em: ${format(new Date(), 'dd/MM/yyyy HH:mm')}`, 235, 16)
 
   // Filters info
   doc.setTextColor(primaryColor[0], primaryColor[1], primaryColor[2])
