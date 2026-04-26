@@ -39,10 +39,10 @@ export default function Candidates() {
   const [search, setSearch] = useState('')
   const [filterStatus, setFilterStatus] = useState(searchParams.get('agendamento') || '')
   const [filterResult, setFilterResult] = useState('')
-  const [filterJob, setFilterJob] = useState('')
+  const [filterJob, setFilterJob] = useState(searchParams.get('vaga') || '')
   const [filterHire, setFilterHire] = useState(searchParams.get('contratar') === 'true' ? 'true' : '')
   const [dateRange, setDateRange] = useState({ start: '', end: '' })
-  const [showFilters, setShowFilters] = useState(!!searchParams.get('agendamento') || !!searchParams.get('contratar'))
+  const [showFilters, setShowFilters] = useState(!!searchParams.get('agendamento') || !!searchParams.get('contratar') || !!searchParams.get('vaga'))
 
   // Data for selects
   const [jobs, setJobs] = useState<JobPosition[]>([])

@@ -13,6 +13,7 @@ export default function Dashboard() {
     scheduled: 0,
   })
   const [scheduledCandidates, setScheduledCandidates] = useState<any[]>([])
+  const [jobStats, setJobStats] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
 
   async function fetchStats() {
@@ -21,7 +22,8 @@ export default function Dashboard() {
       { data: vacanciesData },
       { count: hired },
       { count: scheduled },
-      { data: scheduledData }
+      { data: scheduledData },
+      { data: allCandidatesJobs }
     ] = await Promise.all([
       supabase.from('candidates').select('*', { count: 'exact', head: true }),
       supabase.from('vacancies').select('quantity'),
@@ -31,10 +33,23 @@ export default function Dashboard() {
         .select('id, name, job_position, test_date, test_location:test_locations(name)')
         .eq('current_status', 'Sim')
         .order('test_date', { ascending: true })
-        .limit(5)
+        .limit(5),
+      supabase.from('candidates').select('job_position')
     ])
 
     const totalVacancies = vacanciesData?.reduce((acc, v) => acc + (v.quantity || 0), 0) || 0
+
+    // Agrupar candidatos por vaga
+    const counts = allCandidatesJobs?.reduce((acc: any, curr: any) => {
+      if (curr.job_position) {
+        acc[curr.job_position] = (acc[curr.job_position] || 0) + 1
+      }
+      return acc
+    }, {})
+
+    const formattedJobStats = Object.entries(counts || {})
+      .map(([title, count]) => ({ title, count }))
+      .sort((a: any, b: any) => b.count - a.count)
 
     setStats({
       candidates: candidates || 0,
@@ -43,6 +58,7 @@ export default function Dashboard() {
       scheduled: scheduled || 0,
     })
     setScheduledCandidates(scheduledData || [])
+    setJobStats(formattedJobStats)
     setLoading(false)
   }
 
@@ -140,12 +156,41 @@ export default function Dashboard() {
           </div>
         </div>
 
-        <div className="glass-card p-8 rounded-3xl border border-slate-100 shadow-sm bg-white/50 flex flex-col justify-center items-center text-center">
-          <h2 className="text-xl font-bold mb-4 text-slate-900">Bem-vindo ao Sistema HM</h2>
-          <p className="text-slate-500 leading-relaxed text-sm">
-            Utilize o menu lateral para gerenciar os candidatos, vagas e locais. 
-            O acompanhamento completo desde a triagem até a contratação.
+        <div className="glass-card p-8 rounded-3xl border border-slate-100 shadow-sm bg-white/50 flex flex-col items-center text-center">
+          <h2 className="text-xl font-bold mb-2 text-slate-900">Bem-vindo ao Sistema HM</h2>
+          <p className="text-slate-500 leading-relaxed text-sm mb-6">
+            Acompanhamento completo desde a triagem até a contratação.
           </p>
+          
+          <div className="w-full space-y-3">
+            <h4 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">Candidatos por Vaga</h4>
+            <div className="max-h-[300px] overflow-y-auto pr-2 custom-scrollbar space-y-2">
+              {jobStats.length > 0 ? (
+                jobStats.map((item) => (
+                  <Link
+                    key={item.title}
+                    to={`/candidatos?vaga=${encodeURIComponent(item.title)}`}
+                    className="flex items-center justify-between p-3 rounded-2xl bg-white border border-slate-50 hover:border-primary/20 hover:shadow-md transition-all group"
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className="w-8 h-8 rounded-lg bg-primary/5 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-colors">
+                        <Briefcase size={14} />
+                      </div>
+                      <span className="text-sm font-semibold text-slate-700 group-hover:text-primary transition-colors text-left">{item.title}</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs font-bold text-slate-400 bg-slate-50 px-2 py-1 rounded-lg group-hover:bg-primary/10 group-hover:text-primary transition-colors">
+                        {item.count}
+                      </span>
+                      <ChevronRight size={14} className="text-slate-300 group-hover:text-primary transition-colors" />
+                    </div>
+                  </Link>
+                ))
+              ) : (
+                <p className="text-xs text-slate-400">Nenhum candidato cadastrado ainda.</p>
+              )}
+            </div>
+          </div>
         </div>
       </div>
     </Layout>
