@@ -45,6 +45,8 @@ export default function Candidates() {
   const [regDateRange, setRegDateRange] = useState({ start: '', end: '' })
   const [showFilters, setShowFilters] = useState(!!searchParams.get('agendamento') || !!searchParams.get('contratar') || !!searchParams.get('vaga'))
 
+  const showRegDateCol = !!(regDateRange.start || regDateRange.end)
+
   // Data for selects
   const [jobs, setJobs] = useState<JobPosition[]>([])
   const [workLocations, setWorkLocations] = useState<WorkLocation[]>([])
@@ -156,6 +158,8 @@ export default function Candidates() {
           status: filterStatus,
           result: filterResult,
           job: filterJob
+        }, {
+          showRegistrationDate: showRegDateCol
         })
         resolve(true)
       }),
@@ -315,6 +319,9 @@ export default function Candidates() {
                   <th className="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Candidato</th>
                   <th className="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider text-center">Função</th>
                   <th className="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider text-center">Teste Prático</th>
+                  {showRegDateCol && (
+                    <th className="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider text-center">Registro</th>
+                  )}
                   <th className="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider text-center">Agendamento</th>
                   <th className="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider text-center">Contratar</th>
                   <th className="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider text-right">Ações</th>
@@ -324,14 +331,14 @@ export default function Candidates() {
                 {loading ? (
                   Array(5).fill(0).map((_, i) => (
                     <tr key={i} className="animate-pulse">
-                      <td colSpan={6} className="px-6 py-4">
+                      <td colSpan={showRegDateCol ? 7 : 6} className="px-6 py-4">
                         <div className="h-10 bg-slate-50 rounded-xl" />
                       </td>
                     </tr>
                   ))
                 ) : filteredCandidates.length === 0 ? (
                   <tr>
-                    <td colSpan={6} className="px-6 py-12 text-center text-slate-400">
+                    <td colSpan={showRegDateCol ? 7 : 6} className="px-6 py-12 text-center text-slate-400">
                       Nenhum candidato encontrado com os filtros atuais.
                     </td>
                   </tr>
@@ -383,6 +390,13 @@ export default function Candidates() {
                             </span>
                           </div>
                         </td>
+                        {showRegDateCol && (
+                          <td className="px-6 py-4 text-center" onClick={() => setExpandedCandidate(expandedCandidate === c.id ? null : c.id)}>
+                            <span className="text-sm font-medium text-slate-700">
+                              {c.registration_date ? format(parseISO(c.registration_date), 'dd/MM/yyyy') : '-'}
+                            </span>
+                          </td>
+                        )}
                         <td className="px-6 py-4 text-center" onClick={() => setExpandedCandidate(expandedCandidate === c.id ? null : c.id)}>
                           <div className="flex justify-center">
                             <StatusBadge status={c.current_status} />
@@ -429,7 +443,7 @@ export default function Candidates() {
                       </tr>
                       {expandedCandidate === c.id && (
                         <tr className="bg-slate-50/80 animate-in fade-in slide-in-from-top-1 duration-200">
-                          <td colSpan={6} className="px-8 py-6">
+                          <td colSpan={showRegDateCol ? 7 : 6} className="px-8 py-6">
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                               <div className="space-y-4">
                                 <div>

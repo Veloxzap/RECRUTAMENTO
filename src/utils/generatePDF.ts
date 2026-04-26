@@ -4,10 +4,11 @@ import { format, parseISO } from 'date-fns'
 import type { Candidate } from '../types'
 import logoHm from '../assets/logo_hm.png'
 
-export const generateCandidatesPDF = (candidates: Candidate[], filters: any) => {
+export const generateCandidatesPDF = (candidates: Candidate[], filters: any, options?: { showRegistrationDate?: boolean }) => {
   const doc = new jsPDF('l', 'mm', 'a4')
   const dateStr = format(new Date(), 'dd-MM-yyyy')
   const primaryColor: [number, number, number] = [30, 58, 95] // #1E3A5F
+  const showReg = options?.showRegistrationDate
 
   // Header background
   doc.setFillColor(primaryColor[0], primaryColor[1], primaryColor[2])
@@ -42,21 +43,34 @@ export const generateCandidatesPDF = (candidates: Candidate[], filters: any) => 
   doc.setFontSize(9)
   doc.text(`Filtros ativos: Status: ${filters.status || 'Todos'} | Resultado: ${filters.result || 'Todos'} | Função: ${filters.job || 'Todas'}`, 15, 32)
 
-  const tableData = candidates.map((c, index) => [
-    index + 1,
-    c.name,
-    c.contact,
-    c.job_position,
-    c.work_location?.name || '-',
-    c.test_date ? format(parseISO(c.test_date), 'dd/MM/yyyy') : '-',
-    c.current_status,
-    c.test_result,
-    c.should_hire ? 'v' : 'x'
-  ])
+  const tableData = candidates.map((c, index) => {
+    const row = [
+      index + 1,
+      c.name,
+      c.contact,
+      c.job_position,
+      c.work_location?.name || '-',
+      c.test_date ? format(parseISO(c.test_date), 'dd/MM/yyyy') : '-',
+      c.current_status,
+      c.test_result,
+      c.should_hire ? 'v' : 'x'
+    ]
+
+    if (showReg) {
+      row.splice(5, 0, c.registration_date ? format(parseISO(c.registration_date), 'dd/MM/yyyy') : '-')
+    }
+
+    return row
+  })
+
+  const headers = ['#', 'Nome', 'Contato', 'Função', 'Atuação', 'Data Teste', 'Agendamento', 'Resultado', 'Contratar']
+  if (showReg) {
+    headers.splice(5, 0, 'Data Registro')
+  }
 
   autoTable(doc, {
     startY: 38,
-    head: [['#', 'Nome', 'Contato', 'Função', 'Atuação', 'Data Teste', 'Agendamento', 'Resultado', 'Contratar']],
+    head: [headers],
     body: tableData,
     headStyles: {
       fillColor: primaryColor,
@@ -74,18 +88,20 @@ export const generateCandidatesPDF = (candidates: Candidate[], filters: any) => 
       fillColor: [248, 250, 252] // #F8FAFC
     },
     columnStyles: {
-      8: { halign: 'center', fontStyle: 'bold' } // Contratar column
+      [showReg ? 9 : 8]: { halign: 'center', fontStyle: 'bold' } // Contratar column
     },
     didParseCell: (data) => {
+      const offset = showReg ? 1 : 0
+
       // Color coding for Agendamento (Situação)
-      if (data.section === 'body' && data.column.index === 6) {
+      if (data.section === 'body' && data.column.index === 6 + offset) {
         const val = data.cell.raw as string
         if (val === 'Sim') data.cell.styles.textColor = [124, 58, 237] // Purple
         if (val === 'Não') data.cell.styles.textColor = [100, 116, 139] // Slate
       }
       
       // Color coding for Resultado
-      if (data.section === 'body' && data.column.index === 7) {
+      if (data.section === 'body' && data.column.index === 7 + offset) {
         const val = data.cell.raw as string
         if (val === 'Aprovado') data.cell.styles.textColor = [16, 185, 129] // Emerald
         if (val === 'Reprovado') data.cell.styles.textColor = [239, 68, 68] // Red
@@ -93,7 +109,7 @@ export const generateCandidatesPDF = (candidates: Candidate[], filters: any) => 
       }
       
       // Color coding for Contratar
-      if (data.section === 'body' && data.column.index === 8) {
+      if (data.section === 'body' && data.column.index === 8 + offset) {
         const val = data.cell.raw as string
         if (val === 'v') {
           data.cell.text = ['✓']
