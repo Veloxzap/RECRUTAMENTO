@@ -156,12 +156,7 @@ export default function Dashboard() {
           </div>
         </div>
 
-        <div className="glass-card p-8 rounded-3xl border border-slate-100 shadow-sm bg-white/50 flex flex-col items-center text-center">
-          <h2 className="text-xl font-bold mb-2 text-slate-900">Bem-vindo ao Sistema HM</h2>
-          <p className="text-slate-500 leading-relaxed text-sm mb-6">
-            Acompanhamento completo desde a triagem até a contratação.
-          </p>
-          
+        <div className="glass-card p-8 rounded-3xl border border-slate-100 shadow-sm bg-white/50 flex flex-col items-center">
           <div className="w-full space-y-3">
             <h4 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">Candidatos por Vaga</h4>
             <div className="max-h-[300px] overflow-y-auto pr-2 custom-scrollbar space-y-2">
