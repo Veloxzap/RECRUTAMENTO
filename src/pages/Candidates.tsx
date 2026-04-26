@@ -15,7 +15,8 @@ import {
   MapPin,
   TestTube,
   CheckCircle2,
-  XCircle
+  XCircle,
+  MessageCircle
 } from 'lucide-react'
 import type { Candidate, WorkLocation, TestLocation, JobPosition } from '../types'
 import { toast } from 'sonner'
@@ -316,7 +317,34 @@ export default function Candidates() {
                       <tr className="hover:bg-slate-50/50 transition-colors cursor-pointer group border-b border-slate-50">
                         <td className="px-6 py-4" onClick={() => setExpandedCandidate(expandedCandidate === c.id ? null : c.id)}>
                           <div className="font-semibold text-slate-900">{c.name}</div>
-                          <div className="text-xs text-slate-500">{c.contact}</div>
+                          <div className="flex flex-wrap gap-2 mt-1">
+                            {c.contact.split('/').map((part, index) => {
+                              const clean = part.replace(/\D/g, '')
+                              let final = clean
+                              // Adiciona DDD 83 se for apenas o número (8 ou 9 dígitos)
+                              if (clean.length === 8 || clean.length === 9) {
+                                final = '83' + clean
+                              }
+                              // Adiciona DDI 55 se não tiver
+                              if (final.length > 0 && !final.startsWith('55')) {
+                                final = '55' + final
+                              }
+                              
+                              return (
+                                <a
+                                  key={index}
+                                  href={`https://wa.me/${final}`}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="text-[11px] text-emerald-600 hover:text-emerald-700 flex items-center gap-1 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-100 transition-colors hover:bg-emerald-100"
+                                  onClick={(e) => e.stopPropagation()}
+                                >
+                                  <MessageCircle size={10} />
+                                  {part.trim()}
+                                </a>
+                              )
+                            })}
+                          </div>
                         </td>
                         <td className="px-6 py-4 text-center" onClick={() => setExpandedCandidate(expandedCandidate === c.id ? null : c.id)}>
                           <span className="text-sm text-slate-600">{c.job_position}</span>
