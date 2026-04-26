@@ -1,6 +1,6 @@
 import { jsPDF } from 'jspdf'
 import autoTable from 'jspdf-autotable'
-import { format } from 'date-fns'
+import { format, parseISO } from 'date-fns'
 import type { Candidate } from '../types'
 import logoHm from '../assets/logo_hm.png'
 
@@ -48,7 +48,7 @@ export const generateCandidatesPDF = (candidates: Candidate[], filters: any) => 
     c.contact,
     c.job_position,
     c.work_location?.name || '-',
-    c.test_date ? format(new Date(c.test_date), 'dd/MM/yyyy') : '-',
+    c.test_date ? format(parseISO(c.test_date), 'dd/MM/yyyy') : '-',
     c.current_status,
     c.test_result,
     c.should_hire ? 'v' : 'x'
