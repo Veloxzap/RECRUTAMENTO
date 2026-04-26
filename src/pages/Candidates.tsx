@@ -203,7 +203,7 @@ export default function Candidates() {
 
         {/* Filters Panel */}
         {showFilters && (
-          <div className="glass-card p-6 rounded-3xl animate-in slide-in-from-top-2 duration-300 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+          <div className="glass-card p-6 rounded-3xl animate-in slide-in-from-top-2 duration-300 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             <div className="space-y-1">
               <label className="text-xs font-bold text-slate-500 uppercase ml-1">Agendamento</label>
               <select 
@@ -230,18 +230,6 @@ export default function Candidates() {
               </select>
             </div>
             <div className="space-y-1">
-              <label className="text-xs font-bold text-slate-500 uppercase ml-1">Contratar?</label>
-              <select 
-                className="input-field bg-white"
-                value={filterHire}
-                onChange={(e) => setFilterHire(e.target.value)}
-              >
-                <option value="">Todos</option>
-                <option value="true">Sim</option>
-                <option value="false">Não</option>
-              </select>
-            </div>
-            <div className="space-y-1">
               <label className="text-xs font-bold text-slate-500 uppercase ml-1">Função</label>
               <select 
                 className="input-field bg-white"
@@ -257,14 +245,14 @@ export default function Candidates() {
               <div className="flex gap-2 items-center">
                 <input 
                   type="date" 
-                  className="input-field py-1.5 text-xs" 
+                  className="input-field py-1.5 text-[11px] px-2 w-full" 
                   value={dateRange.start}
                   onChange={(e) => setDateRange(prev => ({ ...prev, start: e.target.value }))}
                 />
                 <span className="text-slate-400">→</span>
                 <input 
                   type="date" 
-                  className="input-field py-1.5 text-xs" 
+                  className="input-field py-1.5 text-[11px] px-2 w-full" 
                   value={dateRange.end}
                   onChange={(e) => setDateRange(prev => ({ ...prev, end: e.target.value }))}
                 />
