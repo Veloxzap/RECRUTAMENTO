@@ -104,6 +104,7 @@ export function CandidateModal({ isOpen, onClose, candidate, onSuccess, data }: 
 
       const payload = {
         ...values,
+        test_date: values.test_date === '' ? null : values.test_date,
         updated_at: new Date().toISOString()
       }
 
